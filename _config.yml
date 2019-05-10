@@ -81,3 +81,15 @@ deploy:
   type: git
   repo: git@github.com:betteryaogang/betteryaogang.github.io.git
   branch: master
+  
+admin:
+  username: yaogang
+  password_hash: $2a$10$brCbeZkBHQnUEp6EySEwqefS6tGm3tqCxEaZEDFPvc.b7flnGwVru
+  secret: wyyaspp
+  deployCommand: 'hexo-admin-publish.bat'
+  qiniuCfg:
+    AccessKey: 'kPC5uHCx0JsJGk0-2rhDKHpxkTcpmCKVa5tXC_oZ'
+    SecretKey: '1PxjuUyOrEi-3dZHPa2lpMvflkS0M7vFKfH-VezX'
+    BucketName: 'betteryaogang_hexo'
+    bucketHost: 'pr9w4k0dq.bkt.clouddn.com'
+
