@@ -352,12 +352,13 @@
       
         
           
-            <p>&emsp;&emsp;多人团队用git进行版本管理时，最好能够商定一个统一的工作流程，今天就来学习一下git-flow<br>我的开发平台时WIN 10，首先去 <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">官网下载安装</a>，安装成功之后，鼠标右击应该会出现 <code>Git GUI Here</code>，<code>Git Bash Here</code>两个选项，说明安装完成，接下来就可以正式进行git-flow学习之路。</p>
-<h3 id="什么是git-flow？"><a href="#什么是git-flow？" class="headerlink" title="什么是git-flow？"></a>什么是git-flow？</h3><p>&emsp;&emsp;git-flow可以看作是一组封装好的git命令集合，它出现的目的不是为了取代git</p>
+            <p>&emsp;&emsp;多人团队用git进行版本管理时，最好能够商定一个统一的工作流程，今天就来学习一下git-flow。  </p>
+<p>&emsp;&emsp;我的开发平台时WIN 10，首先去 <a href="https://git-scm.com/downloads" target="_blank" rel="noopener">官网下载安装</a>，安装成功之后，鼠标右击应该会出现 <code>Git GUI Here</code>，<code>Git Bash Here</code>两个选项，说明安装完成，接下来就可以正式进行git-flow学习之路。</p>
+<h3 id="什么是git-flow？"><a href="#什么是git-flow？" class="headerlink" title="什么是git-flow？"></a>什么是git-flow？</h3><p>&emsp;&emsp;git-flow可以看作是一组封装好的git命令集合，它出现的目的不是为了取代git。</p>
 <h3 id="怎么使用？"><a href="#怎么使用？" class="headerlink" title="怎么使用？"></a>怎么使用？</h3><p>&emsp;&emsp;想在项目中引入git flow非常简单，只需在项目根目录执行<code>git flow init</code>命令，根据提示配置一些命名规则即可。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ git flow init</span><br><span class="line">Initialized empty Git repository in C:/CODE/test/.git/</span><br><span class="line">Branch name for production releases: [master] </span><br><span class="line">Branch name for &quot;next release&quot; development: [develop] </span><br><span class="line"></span><br><span class="line">How to name your supporting branch prefixes?</span><br><span class="line">Feature branches? [feature/] </span><br><span class="line">Release branches? [release/] </span><br><span class="line">Hotfix branches? [hotfix/]</span><br></pre></td></tr></table></figure>
 <p>git flow允许你使用自己喜欢的branch名字。不过我建议直接使用默认的命名机制，不需要输入任何东西，直接一步步确定就行。</p>
-<p>当项目引入git flow后，原有的git命令并不会受到任何影响，你既可以选择使用git flow命令，当然也可选择使用git命令</p>
+<p>当项目引入git flow后，原有的git命令并不会受到任何影响，你既可以选择使用git flow命令，当然也可选择使用git命令。</p>
 <h3 id="git-flow的分支模式"><a href="#git-flow的分支模式" class="headerlink" title="git flow的分支模式"></a>git flow的分支模式</h3><p>&emsp;&emsp;git-flow 模式会预设两个主分支在仓库中：</p>
 <ul>
 <li><p><strong>master分支</strong><br>  master 只能用来放正式产品代码。你不能直接在 master 分支上进行开发，而是在其他指定的，独立的特性分支中。不直接提交改动到 master 分支上也是很多工作流程的一个共同的规则。</p>
