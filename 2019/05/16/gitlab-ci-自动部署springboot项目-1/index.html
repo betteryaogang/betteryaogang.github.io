@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="拾光记">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;项目代码转到gitlab管理之后，就想着能够自动部署，折腾了几天终于搞定了，记录一下。 服务器情况介绍 所有服务器都是centos7的系统，GitLab CE 11.10.4  gitlab服务器 因gitlab程序需要的内存占用比较大，为了稳定单独用一台服务器跑gitlab程序。 测试环境服务器 正式环境服务器 测试及正式环境服务器需分别安装基础的java、git、mav">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-09-18T08:59:50.281Z">
+<meta property="og:updated_time" content="2019-09-18T09:15:47.246Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gitlab ci 自动部署springboot项目">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;项目代码转到gitlab管理之后，就想着能够自动部署，折腾了几天终于搞定了，记录一下。 服务器情况介绍 所有服务器都是centos7的系统，GitLab CE 11.10.4  gitlab服务器 因gitlab程序需要的内存占用比较大，为了稳定单独用一台服务器跑gitlab程序。 测试环境服务器 正式环境服务器 测试及正式环境服务器需分别安装基础的java、git、mav">
@@ -363,7 +363,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  7 分钟
+                  8 分钟
                 </span>
               
             </div>
@@ -454,6 +454,13 @@
 <p>值得注意的是<code>sudo nohup java -jar x.jar  &gt;/root/nohup.out 2&gt;&amp;1 &amp;</code> 这一命令，一开始我执行的是<code>nohup java -jar x.jar &amp;</code>命令，程序后台执行，可是发现gitlab CI那边显示的job一直是running状态，console控制台也一直在输出log日志，导致job以及pipelines那边一直卡在那边，这种情况肯定是不能接受的，上网一番搜索，并没有找到解决方案。</p>
 <p>后来想想既然是由于输出日志卡在那边，那我把日志输出重定向到另外一个文件，让gitlab runner的job进程结束掉应该就可以了，于是命令改写一下将日志输出到另外一个文件<code>/root/nohup.out</code>，再次执行job，成功结束job，pipelines status也显示<code>passed</code>。  </p>
 <p>至此，通过gitlab ci 自动部署springboot项目整个环境搭建完成。</p>
+<p><strong> 问题记录</strong></p>
+<ol>
+<li><p>This job is stuck, because the project doesn’t have any runners online assigned to it. Go to Runners page</p>
+<p> <a href="https://stackoverflow.com/questions/53370840/this-job-is-stuck-because-the-project-doesnt-have-any-runners-online-assigned" target="_blank" rel="noopener">stackoverflow解决方案</a></p>
+</li>
+</ol>
+<p>找到你的项目 Settings -&gt; CI/CD -&gt; Expand Runners -&gt; edit runner -&gt; 勾选 <code>Indicates whether this runner can pick jobs without tags</code>选项。</p>
 
       
     </div>
