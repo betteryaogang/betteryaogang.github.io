@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="springboot,">
+  <meta name="keywords" content="springboot参数校验,@valid,@validated,">
 
 
 
@@ -80,14 +80,14 @@
 
 
 <meta name="description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
-<meta name="keywords" content="springboot">
+<meta name="keywords" content="springboot参数校验,@valid,@validated">
 <meta property="og:type" content="article">
 <meta property="og:title" content="springboot请求参数加密 使用@valid校验参数失败解决方案">
 <meta property="og:url" content="http://yoursite.com/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/index.html">
 <meta property="og:site_name" content="拾光记">
 <meta property="og:description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-10-14T10:54:02.402Z">
+<meta property="og:updated_time" content="2019-10-14T10:58:30.667Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="springboot请求参数加密 使用@valid校验参数失败解决方案">
 <meta name="twitter:description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
@@ -402,7 +402,7 @@
 
 
 <h4 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h4><ol>
-<li><p>将自动校验时机延后，经查询自动校验应该是在<code>@InitBind</code> 绑定完参数之后触发校验（这一块存在疑问，有时间再深入了解），并没有找到方法能够延迟校验，SO这个方案放弃。</p>
+<li><p><del>将自动校验时机延后，经查询自动校验应该是在<code>@InitBind</code> 绑定完参数之后触发校验（这一块存在疑问，有时间再深入了解），并没有找到方法能够延迟校验，SO这个方案放弃。</del></p>
 </li>
 <li><p>在复用原有<code>@NotEmpty</code>、 <code>@NotNull</code>等校验注解的同时，将参数校验由自动触发改成手动调用，校验时机由自己掌握</p>
 <ul>
@@ -434,7 +434,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/springboot/" rel="tag"># springboot</a>
+            <a href="/tags/springboot参数校验/" rel="tag"># springboot参数校验</a>
+          
+            <a href="/tags/valid/" rel="tag"># @valid</a>
+          
+            <a href="/tags/validated/" rel="tag"># @validated</a>
           
         </div>
       
@@ -554,7 +558,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
