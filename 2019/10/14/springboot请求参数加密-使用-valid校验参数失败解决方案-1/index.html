@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="mybatis,mysql,">
+  <meta name="keywords" content="springboot,">
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;今天再弄一个历史项目时需要查一张表，有一个state字段定义为 tinyint(1) 类型，用来表示这一行记录的状态，值通常会有0、1、2等。 &amp;emsp;&amp;emsp;正常来讲mysql中的tinyint类型会映射成Java中的Byte数据类型，然而当我以 Map&amp;lt;String, Object&amp;gt; 来接收数据时，state字段却意外的变成boolean类型的tru">
-<meta name="keywords" content="mybatis,mysql">
+<meta name="description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
+<meta name="keywords" content="springboot">
 <meta property="og:type" content="article">
-<meta property="og:title" content="mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决">
-<meta property="og:url" content="http://yoursite.com/2019/07/17/mybatis-mysql-返回tinyint-1-类型的数据时-会自动转为boolean类型的问题解决/index.html">
+<meta property="og:title" content="springboot请求参数加密 使用@valid校验参数失败解决方案">
+<meta property="og:url" content="http://yoursite.com/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/index.html">
 <meta property="og:site_name" content="拾光记">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;今天再弄一个历史项目时需要查一张表，有一个state字段定义为 tinyint(1) 类型，用来表示这一行记录的状态，值通常会有0、1、2等。 &amp;emsp;&amp;emsp;正常来讲mysql中的tinyint类型会映射成Java中的Byte数据类型，然而当我以 Map&amp;lt;String, Object&amp;gt; 来接收数据时，state字段却意外的变成boolean类型的tru">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-17T08:16:08.340Z">
+<meta property="og:updated_time" content="2019-10-14T10:49:34.055Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;今天再弄一个历史项目时需要查一张表，有一个state字段定义为 tinyint(1) 类型，用来表示这一行记录的状态，值通常会有0、1、2等。 &amp;emsp;&amp;emsp;正常来讲mysql中的tinyint类型会映射成Java中的Byte数据类型，然而当我以 Map&amp;lt;String, Object&amp;gt; 来接收数据时，state字段却意外的变成boolean类型的tru">
+<meta name="twitter:title" content="springboot请求参数加密 使用@valid校验参数失败解决方案">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。 参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：  在需要加密的接口方法上面加上自定义注解 在自定义切面的@Around 方法里首先对参数进行签名验证并解密 在调用 pjp.proceed()方法执行完原有业务逻辑后后，对返回值进行加密并签名  对于">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/17/mybatis-mysql-返回tinyint-1-类型的数据时-会自动转为boolean类型的问题解决/">
+  <link rel="canonical" href="http://yoursite.com/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/">
 
 
 
 
 
-  <title>mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决 | 拾光记</title>
+  <title>springboot请求参数加密 使用@valid校验参数失败解决方案 | 拾光记</title>
   
 
 
@@ -264,7 +264,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/17/mybatis-mysql-返回tinyint-1-类型的数据时-会自动转为boolean类型的问题解决/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="betteryaogang">
@@ -281,7 +281,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决</h1>
+          <h1 class="post-title" itemprop="name headline">springboot请求参数加密 使用@valid校验参数失败解决方案</h1>
         
 
         <div class="post-meta">
@@ -293,8 +293,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-17T15:52:00+08:00">
-                2019-07-17
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-14T18:12:00+08:00">
+                2019-10-14
               </time>
             
 
@@ -303,28 +303,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -347,7 +325,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  277
+                  612
                 </span>
               
 
@@ -363,7 +341,7 @@
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
                 <span title="阅读时长">
-                  1 分钟
+                  2 分钟
                 </span>
               
             </div>
@@ -384,18 +362,39 @@
       
 
       
-        <p>&emsp;&emsp;今天再弄一个历史项目时需要查一张表，有一个state字段定义为 <code>tinyint(1)</code> 类型，用来表示这一行记录的状态，值通常会有0、1、2等。</p>
-<p>&emsp;&emsp;正常来讲mysql中的tinyint类型会映射成Java中的Byte数据类型，然而当我以 <code>Map&lt;String, Object&gt;</code> 来接收数据时，state字段却意外的变成boolean类型的<code>true/false</code>，经过测试，state为0的时候会返回<code>false</code>,其他值一律会返回<code>true</code>,这样的返回值当然是有问题的。</p>
-<p>经过查找，解决方案如下：</p>
-<p><strong> 1. 编写mybatis xml文件时对该字段特殊处理一下</strong></p>
+        <p>&emsp;&emsp;最近新开了一个APP后端接口的项目，前后端交互采用了参数AES加密及签名的方式以保证接口安全。</p>
+<p>参数加解密有多种方案，这里我采用了自定义注解+AOP切面的方式，大致流程如下：</p>
 <ul>
-<li>在select该字段时用ifnull处理<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ifnull(f.state, 0) AS state</span><br></pre></td></tr></table></figure>
+<li>在需要加密的接口方法上面加上自定义注解</li>
+<li>在自定义切面的<code>@Around</code> 方法里首先对参数进行签名验证并解密</li>
+<li>在调用 <code>pjp.proceed()</code>方法执行完原有业务逻辑后后，对返回值进行加密并签名</li>
+</ul>
+<p>对于前端传过来的参数，肯定是要进行基本的格式验证，正常项目来讲，一般是这样的：</p>
+<ul>
+<li>项目引入<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<p><strong> 2. 在jdbc连接上加上参数tinyInt1isBit=false</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql://localhost:3306/test?tinyInt1isBit=false</span><br></pre></td></tr></table></figure>
-<p><strong> 3. 日常开发中应尽量避免定义tinyint(1)类型</strong></p>
-<p>&emsp;&emsp; mysql中tinyInt(1) 类型一般只用来代表Boolean含义的字段，0代表False，1代表True，如果一个字段需要存储除0或1之外的数值，那么需要将字段定义成tinyint(N), N&gt;1。例如tinyint(4)。</p>
+<p>&emsp;&emsp; 对于需要验证的参数对象属性，加上 <code>@NotEmpty</code>、 <code>@NotNull</code>等校验注解，并在Controller方法参数对象前面加上<code>@Validated</code>注解、并在参数对象后面紧接上一个<code>BindingResult</code>对象即可。</p>
+<font color="red"><br>然而项目运行之后，却发现参数校验并没有起作用，DEBUG发现，触发<code>@Validated</code>自动校验的时机在AOP<code>@Around</code>方法里调用解密参数之前，也就是说，在自动校验参数合法性的时候，加密过的参数还并未解密并设置到需要校验的参数对象属性上面，所以导致自动校验失败。<br></font>
+
+
+
+<h4 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a>解决方案：</h4><ol>
+<li><p>将自动校验时机延后，经查询自动校验应该是在<code>@InitBind</code> 绑定完参数之后触发校验（这一块存在疑问，有时间再深入了解），并没有找到方法能够延迟校验，SO这个方案放弃。</p>
+</li>
+<li><p>在复用原有<code>@NotEmpty</code>、 <code>@NotNull</code>等校验注解的同时，将参数校验由自动触发改成手动调用，校验时机由自己掌握</p>
+<ul>
+<li>Controller方法参数前面去掉<code>@Validated</code>注解（此注解是触发自动校验的关键），并同时去掉参数对象后面紧跟的<code>BindingResult</code>对象</li>
+<li><p>在自定义AOP切面里导入依赖</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">@Autowired</span><br><span class="line">protected SmartValidator validator;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>AOP <code>@Around</code> 方法里，在调用参数解密方法之后加上代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BindingResult bindingResult = new DirectFieldBindingResult(o, o.getClass().getName());</span><br><span class="line">validator.validate(o, bindingResult);</span><br><span class="line">if(bindingResult.hasErrors())&#123;</span><br><span class="line">    // return 返回错误信息;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>进行参数合法性校验，运行可以发现校验生效，问题完美解决。</p>
+</li>
+</ol>
 
       
     </div>
@@ -413,9 +412,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/mybatis/" rel="tag"># mybatis</a>
-          
-            <a href="/tags/mysql/" rel="tag"># mysql</a>
+            <a href="/tags/springboot/" rel="tag"># springboot</a>
           
         </div>
       
@@ -428,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/16/git-flow-的工作流程/" rel="next" title="git-flow 的工作流程">
-                <i class="fa fa-chevron-left"></i> git-flow 的工作流程
+              <a href="/2019/07/17/mybatis-mysql-返回tinyint-1-类型的数据时-会自动转为boolean类型的问题解决/" rel="next" title="mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决">
+                <i class="fa fa-chevron-left"></i> mybatis+mysql 返回tinyint(1)类型的数据时 会自动转为boolean类型的问题解决
               </a>
             
           </div>
@@ -437,10 +434,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/" rel="prev" title="springboot请求参数加密 使用@valid校验参数失败解决方案">
-                springboot请求参数加密 使用@valid校验参数失败解决方案 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -492,8 +485,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,6 +555,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#解决方案："><span class="nav-number">1.</span> <span class="nav-text">解决方案：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
