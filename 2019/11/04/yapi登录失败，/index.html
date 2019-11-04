@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="docker,gitlab,">
+  <meta name="keywords" content="Hexo, NexT">
 
 
 
@@ -79,18 +79,17 @@
 
 
 
-<meta name="description" content="&amp;emsp;&amp;emsp;自己折腾在服务器搭了一个gitlab来管理代码，为了方便选择通过docker来运行启动命令：1234567docker run \    --publish 443:443 --publish 80:80 --publish 22:22 \    --name gitlab \    --volume /root/gitlab/config:/etc/gitlab \">
-<meta name="keywords" content="docker,gitlab">
+<meta name="description" content="&amp;emsp;&amp;emsp;前段时间搭建了YApi平台来作为项目的接口管理平台，几个月下来运行都还挺稳定的。今天小伙伴突然跑来跟我说Yapi平台登录不上了。 我试了一下发现果然登录不上了，F12打开控制台，login接口返回 登录失败...,没有其他多余信息。 于是登录服务器，尝试重启Yapi服务，故障依旧。 能够打开登录页面，说明Yapi服务本身没问题，登录不上很有能是Yapi平台到数据库不通。一查">
 <meta property="og:type" content="article">
-<meta property="og:title" content="通过docker运行gitlab， clone项目时显示hostname地址不对">
-<meta property="og:url" content="http://yoursite.com/2019/05/10/docker/index.html">
+<meta property="og:title" content="mongodb进程意外终止，再次启动报错：Job for mongod.service failed because the control process exited with error code. See &quot;systemctl status mongod.service&quot; and &quot;journalctl -xe&quot; for details.">
+<meta property="og:url" content="http://yoursite.com/2019/11/04/yapi登录失败，/index.html">
 <meta property="og:site_name" content="拾光记">
-<meta property="og:description" content="&amp;emsp;&amp;emsp;自己折腾在服务器搭了一个gitlab来管理代码，为了方便选择通过docker来运行启动命令：1234567docker run \    --publish 443:443 --publish 80:80 --publish 22:22 \    --name gitlab \    --volume /root/gitlab/config:/etc/gitlab \">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;前段时间搭建了YApi平台来作为项目的接口管理平台，几个月下来运行都还挺稳定的。今天小伙伴突然跑来跟我说Yapi平台登录不上了。 我试了一下发现果然登录不上了，F12打开控制台，login接口返回 登录失败...,没有其他多余信息。 于是登录服务器，尝试重启Yapi服务，故障依旧。 能够打开登录页面，说明Yapi服务本身没问题，登录不上很有能是Yapi平台到数据库不通。一查">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-05-10T10:04:47.680Z">
+<meta property="og:updated_time" content="2019-11-04T09:20:46.895Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="通过docker运行gitlab， clone项目时显示hostname地址不对">
-<meta name="twitter:description" content="&amp;emsp;&amp;emsp;自己折腾在服务器搭了一个gitlab来管理代码，为了方便选择通过docker来运行启动命令：1234567docker run \    --publish 443:443 --publish 80:80 --publish 22:22 \    --name gitlab \    --volume /root/gitlab/config:/etc/gitlab \">
+<meta name="twitter:title" content="mongodb进程意外终止，再次启动报错：Job for mongod.service failed because the control process exited with error code. See &quot;systemctl status mongod.service&quot; and &quot;journalctl -xe&quot; for details.">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;前段时间搭建了YApi平台来作为项目的接口管理平台，几个月下来运行都还挺稳定的。今天小伙伴突然跑来跟我说Yapi平台登录不上了。 我试了一下发现果然登录不上了，F12打开控制台，login接口返回 登录失败...,没有其他多余信息。 于是登录服务器，尝试重启Yapi服务，故障依旧。 能够打开登录页面，说明Yapi服务本身没问题，登录不上很有能是Yapi平台到数据库不通。一查">
 
 
 
@@ -120,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/10/docker/">
+  <link rel="canonical" href="http://yoursite.com/2019/11/04/yapi登录失败，/">
 
 
 
 
 
-  <title>通过docker运行gitlab， clone项目时显示hostname地址不对 | 拾光记</title>
+  <title>mongodb进程意外终止，再次启动报错：Job for mongod.service failed because the control process exited with error code. See "systemctl status mongod.service" and "journalctl -xe" for details. | 拾光记</title>
   
 
 
@@ -264,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/10/docker/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/04/yapi登录失败，/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="betteryaogang">
@@ -281,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">通过docker运行gitlab， clone项目时显示hostname地址不对</h1>
+          <h1 class="post-title" itemprop="name headline">mongodb进程意外终止，再次启动报错：Job for mongod.service failed because the control process exited with error code. See "systemctl status mongod.service" and "journalctl -xe" for details.</h1>
         
 
         <div class="post-meta">
@@ -293,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-05-10T16:29:00+08:00">
-                2019-05-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T16:57:00+08:00">
+                2019-11-04
               </time>
             
 
@@ -303,28 +302,6 @@
             
           </span>
 
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/技术/" itemprop="url" rel="index">
-                    <span itemprop="name">技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -347,7 +324,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  483
+                  505
                 </span>
               
 
@@ -384,13 +361,14 @@
       
 
       
-        <p>&emsp;&emsp;自己折腾在服务器搭了一个gitlab来管理代码，为了方便选择通过docker来运行<br>启动命令：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">    --publish <span class="number">443</span>:<span class="number">443</span> --publish <span class="number">80</span>:<span class="number">80</span> --publish <span class="number">22</span>:<span class="number">22</span> \</span><br><span class="line">    --name gitlab \</span><br><span class="line">    --volume /root/gitlab/config:<span class="regexp">/etc/gi</span>tlab \</span><br><span class="line">    --volume /root/gitlab/logs:<span class="regexp">/var/</span>log/gitlab \</span><br><span class="line">    --volume /root/gitlab/data:<span class="regexp">/var/</span>opt/gitlab \</span><br><span class="line">    gitlab/gitlab-ce</span><br></pre></td></tr></table></figure></p>
-<p>按照教程一路下来倒也没出什么问题，顺利登入系统。  </p>
-<p>&emsp;&emsp;OK，接下来导入原有项目，gitlab很贴心的提供了从主流平台import功能，项目导入过程也是很顺利。 下面clone该项目，gitlab打开该项目主页，点开clone按钮（一切还是熟悉的操作）<br>当我看到 <code>git@d9d5dfeda5a0:xxx/xxx.git</code> 这一串地址时，我的内心时有点懵逼的。可我还是抱着一丝丝希望执行了git clone,果然是失败了，看错误应该是找不到该hostname，<code>d9d5dfeda5a0</code>这一串神秘代码按照正常操作应该是一个IP或者域名才对，这TM是啥？？</p>
-<p>&emsp;&emsp;从头回顾一下，大的流程应该没问题，突然想到gitlab是跑在docker container里啊，这一串看起来有点像CONTAINER ID呀？<br>执行<code>docker ps</code>，果然是CONTAINER ID，看来找到问题了，那就好解决了，只需要在执行docker run 的时候添加<code>--hostname=你的ip/域名</code>就行了<br>修改启动命令：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker run \</span><br><span class="line">    --publish <span class="number">443</span>:<span class="number">443</span> --publish <span class="number">80</span>:<span class="number">80</span> --publish <span class="number">22</span>:<span class="number">22</span> \</span><br><span class="line">    --hostname xxx.com</span><br><span class="line">    --name gitlab \</span><br><span class="line">    --volume /root/gitlab/config:<span class="regexp">/etc/gi</span>tlab \</span><br><span class="line">    --volume /root/gitlab/logs:<span class="regexp">/var/</span>log/gitlab \</span><br><span class="line">    --volume /root/gitlab/data:<span class="regexp">/var/</span>opt/gitlab \</span><br><span class="line">    gitlab/gitlab-ce</span><br></pre></td></tr></table></figure></p>
-<p>可以看到地址已经变成了ip，git clone也能成功。</p>
-<hr>
-<h5 id="另外还需要注意的一点"><a href="#另外还需要注意的一点" class="headerlink" title="另外还需要注意的一点"></a>另外还需要注意的一点</h5><p>&emsp;&emsp;还有当docker restart之后，想要container自启动的话 可以在docker run时加上参数<code>--restart=always</code>，但如果docker run时忘了加–restrt也不要紧，不需要重新docker run，只需要执行<code>docker container update --restart=always &lt;container ID&gt;</code>即可。<br>例：CONTAINER ID 为<code>d9d5dfeda5a0</code><br>执行 <code>docker container update --restart=always d9d5</code></p>
+        <p>&emsp;&emsp;前段时间搭建了YApi平台来作为项目的接口管理平台，几个月下来运行都还挺稳定的。今天小伙伴突然跑来跟我说Yapi平台登录不上了。</p>
+<p>我试了一下发现果然登录不上了，F12打开控制台，login接口返回 <code>登录失败...</code>,没有其他多余信息。</p>
+<p>于是登录服务器，尝试重启Yapi服务，故障依旧。</p>
+<p>能够打开登录页面，说明Yapi服务本身没问题，登录不上很有能是Yapi平台到数据库不通。一查进程果然，mongodb进程不知道什么时候被kill了。</p>
+<p>执行<code>systemctl start mongod.service</code> 启动mongodb</p>
+<p>发现并不能启动起来，报错：<br><code>Job for mongod.service failed because the control process exited with error code. See &quot;systemctl status mongod.service&quot; and &quot;journalctl -xe&quot; for details.</code></p>
+<p>于是决定看看mongodb日志 <code>/var/log/mongodb/mongod.log</code>,发现日后最后有这么一段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (28) [1572799522:691543][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __posix_file_write, 576: /var/lib/mongo/index-5-7456175613940187659.wt: handle-write: pwrite: failed to write 4096 bytes at offset 16384: No space left on device Raw: [1572799522:691543][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __posix_file_write, 576: /var/lib/mongo/index-5-7456175613940187659.wt: handle-write: pwrite: failed to write 4096 bytes at offset 16384: No space left on device</span><br><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (28) [1572799522:694176][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __ckpt_process, 704: index-5-7456175613940187659.wt: fatal checkpoint failure: No space left on device Raw: [1572799522:694176][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __ckpt_process, 704: index-5-7456175613940187659.wt: fatal checkpoint failure: No space left on device</span><br><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (-31804) [1572799522:694196][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __wt_panic, 520: the process must exit and restart: WT_PANIC: WiredTiger library panic Raw: [1572799522:694196][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __wt_panic, 520: the process must exit and restar</span><br></pre></td></tr></table></figure></p>
+<p><code>No space left on device</code>,问题就很明显是服务器盘满了，服务器是40G的默认盘，程序跑久了日志就把空间占的差不多了，清理掉无用的日志文件，重启mongodb、重启Yapi，问题解决。</p>
 
       
     </div>
@@ -406,14 +384,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/docker/" rel="tag"># docker</a>
-          
-            <a href="/tags/gitlab/" rel="tag"># gitlab</a>
-          
-        </div>
-      
 
       
       
@@ -423,8 +393,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/05/10/Markdown语法/" rel="next" title="Markdown语法">
-                <i class="fa fa-chevron-left"></i> Markdown语法
+              <a href="/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/" rel="next" title="springboot请求参数加密 使用@valid校验参数失败解决方案">
+                <i class="fa fa-chevron-left"></i> springboot请求参数加密 使用@valid校验参数失败解决方案
               </a>
             
           </div>
@@ -432,10 +402,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/16/gitlab-ci-自动部署springboot项目-1/" rel="prev" title="gitlab ci 自动部署springboot项目">
-                gitlab ci 自动部署springboot项目 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -487,17 +453,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -557,22 +514,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#另外还需要注意的一点"><span class="nav-number">1.</span> <span class="nav-text">另外还需要注意的一点</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

@@ -260,6 +260,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/11/04/yapi登录失败，/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="betteryaogang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="拾光记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/11/04/yapi登录失败，/" itemprop="url">mongodb进程意外终止，再次启动报错：Job for mongod.service failed because the control process exited with error code. See "systemctl status mongod.service" and "journalctl -xe" for details.</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-11-04T16:57:00+08:00">
+                2019-11-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  505
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>&emsp;&emsp;前段时间搭建了YApi平台来作为项目的接口管理平台，几个月下来运行都还挺稳定的。今天小伙伴突然跑来跟我说Yapi平台登录不上了。</p>
+<p>我试了一下发现果然登录不上了，F12打开控制台，login接口返回 <code>登录失败...</code>,没有其他多余信息。</p>
+<p>于是登录服务器，尝试重启Yapi服务，故障依旧。</p>
+<p>能够打开登录页面，说明Yapi服务本身没问题，登录不上很有能是Yapi平台到数据库不通。一查进程果然，mongodb进程不知道什么时候被kill了。</p>
+<p>执行<code>systemctl start mongod.service</code> 启动mongodb</p>
+<p>发现并不能启动起来，报错：<br><code>Job for mongod.service failed because the control process exited with error code. See &quot;systemctl status mongod.service&quot; and &quot;journalctl -xe&quot; for details.</code></p>
+<p>于是决定看看mongodb日志 <code>/var/log/mongodb/mongod.log</code>,发现日后最后有这么一段：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (28) [1572799522:691543][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __posix_file_write, 576: /var/lib/mongo/index-5-7456175613940187659.wt: handle-write: pwrite: failed to write 4096 bytes at offset 16384: No space left on device Raw: [1572799522:691543][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __posix_file_write, 576: /var/lib/mongo/index-5-7456175613940187659.wt: handle-write: pwrite: failed to write 4096 bytes at offset 16384: No space left on device</span><br><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (28) [1572799522:694176][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __ckpt_process, 704: index-5-7456175613940187659.wt: fatal checkpoint failure: No space left on device Raw: [1572799522:694176][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __ckpt_process, 704: index-5-7456175613940187659.wt: fatal checkpoint failure: No space left on device</span><br><span class="line">2019-11-04T00:45:22.694+0800 E  STORAGE  [WTCheckpointThread] WiredTiger error (-31804) [1572799522:694196][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __wt_panic, 520: the process must exit and restart: WT_PANIC: WiredTiger library panic Raw: [1572799522:694196][27159:0x7f7665c23700], file:index-5-7456175613940187659.wt, WT_SESSION.checkpoint: __wt_panic, 520: the process must exit and restar</span><br></pre></td></tr></table></figure></p>
+<p><code>No space left on device</code>,问题就很明显是服务器盘满了，服务器是40G的默认盘，程序跑久了日志就把空间占的差不多了，清理掉无用的日志文件，重启mongodb、重启Yapi，问题解决。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/10/14/springboot请求参数加密-使用-valid校验参数失败解决方案-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1544,7 +1702,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
