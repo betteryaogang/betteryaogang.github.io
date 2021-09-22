@@ -323,7 +323,7 @@
                   <span class="post-meta-item-text">字数统计&#58;</span>
                 
                 <span title="字数统计">
-                  86
+                  339
                 </span>
               
 
@@ -363,6 +363,15 @@
         
           
             <p>&emsp;&emsp;家里的兄弟打印机是USB线连接的，必须插在电脑上才能打印，使用起来不是很方便，<br>淘了个二手树莓派3b安装了CUPS打印服务，打印机插树莓派上，这样电脑、手机（安卓和IOS）都可以无线打印了，折腾好久记录一下。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><strong>1. </strong> 安装树莓派系统本身就不用说了吧，这个没什么难度，需要注意的是安装完之后需要check一下几个环境变量，后面CUPS服务会使用到<br>命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">locale</span><br></pre></td></tr></table></figure></p>
+<p>LANGUAGE</p>
+<p>LC_ALL</p>
+<p>LANG</p>
+<p>注意已上几个变量，没有值的话，编辑 ~/.bashrc文件<br>export设置一下en_US.UTF-8</p>
+<p>另外，最好执行一下raspi-config设置一下时区以及locale</p>
+<p>apt换源<br>/etc/apt/sources.list<br>换中科大源 mirrors.ustc.edu.cn/raspbian</p>
+<p>兄弟打印机官方只提供了intel i386平台的驱动，而树莓派本身CPU是ARM系的 直接安装deb驱动包就会得到一个错误<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package architecture (i386) does not match system (armhf)</span><br></pre></td></tr></table></figure></p>
+<p>这个问题很长时间都没有头绪，尝试了很多方法，都没有成功，后来翻到一个很老的帖子，发现了兄弟官方一个支持armhf架构的通用驱动包，可以支持大部分的兄弟打印机型号，安装后成功驱动打印机。</p>
 
           
         
