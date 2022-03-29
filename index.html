@@ -260,6 +260,219 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/28/Win10-Docker-Desktop-安装k8s-istio完成金丝雀发布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="betteryaogang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="拾光记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/03/28/Win10-Docker-Desktop-安装k8s-istio完成金丝雀发布/" itemprop="url">Win10 +Docker Desktop 安装k8s istio完成金丝雀发布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-28T17:52:00+08:00">
+                2022-03-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/" itemprop="url" rel="index">
+                    <span itemprop="name">kubernetes</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/istio/" itemprop="url" rel="index">
+                    <span itemprop="name">istio</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/kubernetes/istio/service-mesh/" itemprop="url" rel="index">
+                    <span itemprop="name">service mesh</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  847
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="调用链路说明"><a href="#调用链路说明" class="headerlink" title="调用链路说明"></a>调用链路说明</h3><p>调用链路为：<code>客户端</code>-&gt; <code>itsio gateway</code> -&gt; <code>a服务</code> - &gt; <code>b服务</code></p>
+<p>其中：</p>
+<ul>
+<li>a服务只有v1版本，b服务包含v1和v2版本，a服务内部会调用b服务。</li>
+<li>金丝雀发布要求部分指定header的请求走v2版本，其余请求走v1版本。</li>
+</ul>
+<p><strong>1. 部署几个基础服务 </strong></p>
+<p>demo.yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: svc-b</span><br><span class="line">  labels:</span><br><span class="line">    app: demo-b</span><br><span class="line">    service: svc-b</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 8080</span><br><span class="line">    name: http</span><br><span class="line">    targetPort: 8080</span><br><span class="line">    protocol: TCP</span><br><span class="line">  selector:</span><br><span class="line">    app: demo-b</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: demo-b-v1</span><br><span class="line">  labels:</span><br><span class="line">    app: demo-b</span><br><span class="line">    version: v1</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: demo-b</span><br><span class="line">      version: v1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: demo-b</span><br><span class="line">        version: v1</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: demo-b</span><br><span class="line">        image: yaogang/demo-b-v1:v1.0</span><br><span class="line">        imagePullPolicy: IfNotPresent</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line">      restartPolicy: Always</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: demo-b-v2</span><br><span class="line">  labels:</span><br><span class="line">    app: demo-b</span><br><span class="line">    version: v2</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: demo-b</span><br><span class="line">      version: v2</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: demo-b</span><br><span class="line">        version: v2</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: demo-b-v1</span><br><span class="line">        image: yaogang/demo-b-v2:v1.0</span><br><span class="line">        imagePullPolicy: IfNotPresent</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line">      restartPolicy: Always</span><br><span class="line">---</span><br><span class="line">##################################################################################################</span><br><span class="line"># demo-a</span><br><span class="line">##################################################################################################</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: svc-a</span><br><span class="line">  labels:</span><br><span class="line">    app: demo-a</span><br><span class="line">    service: svc-a</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 8080</span><br><span class="line">    name: http</span><br><span class="line">    targetPort: 8080</span><br><span class="line">    protocol: TCP</span><br><span class="line">  selector:</span><br><span class="line">    app: demo-a</span><br><span class="line">---</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: demo-a-v1</span><br><span class="line">  labels:</span><br><span class="line">    app: demo-a</span><br><span class="line">    version: v1</span><br><span class="line">spec:</span><br><span class="line">  replicas: 1</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      app: demo-a</span><br><span class="line">      version: v1</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        app: demo-a</span><br><span class="line">        version: v1</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: demo-a</span><br><span class="line">        image: yaogang/demo-a:v1.0</span><br><span class="line">        imagePullPolicy: IfNotPresent</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 8080</span><br><span class="line">      restartPolicy: Always</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>网关转发路由配置：客户端/greet请求转发至svc-a服务。<br>demo-gateway.yaml文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: Gateway</span><br><span class="line">metadata:</span><br><span class="line">  name: demo-gateway</span><br><span class="line">spec:</span><br><span class="line">  selector:</span><br><span class="line">    istio: ingressgateway # use istio default controller</span><br><span class="line">  servers:</span><br><span class="line">  - port:</span><br><span class="line">      number: 80</span><br><span class="line">      name: http</span><br><span class="line">      protocol: HTTP</span><br><span class="line">    hosts:</span><br><span class="line">    - &quot;*&quot;</span><br><span class="line">---</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: demo</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - &quot;*&quot;</span><br><span class="line">  gateways:</span><br><span class="line">  - demo-gateway</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - uri:</span><br><span class="line">        exact: /greet</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: svc-a</span><br><span class="line">        port:</span><br><span class="line">          number: 8080</span><br></pre></td></tr></table></figure></p>
+<p><strong>2. 配置转发规则 </strong></p>
+<p>配置b服务的VirtualService和 DestinationRule规则（VirtualService是配置请求到该服务时如何转发至不同版本网络组(可以根据header头或是query参数，也可以按权重转发)，DestinationRule主要是配置后续在一个Deployment内部多个replicas副本之间的转发规则（是每个pod依次轮询还是随机pod））</p>
+<p>destination-rule-svc-b-canary.yaml文件:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: DestinationRule #service到内部具体pod的转发规则</span><br><span class="line">metadata:</span><br><span class="line">  name: svc-b-destination-rule</span><br><span class="line">spec:</span><br><span class="line">  host: svc-b</span><br><span class="line">  trafficPolicy:  #这里指的应该是一个Deployment内部多个replicas之间的转发规则</span><br><span class="line">    loadBalancer:</span><br><span class="line">      simple: RANDOM  </span><br><span class="line">  subsets:  #svc-b内部分成v1和v2两个网络分组，</span><br><span class="line">  - name: v1</span><br><span class="line">    labels:</span><br><span class="line">      version: v1</span><br><span class="line">  - name: v2</span><br><span class="line">    labels:</span><br><span class="line">      version: v2</span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># 金丝雀发布-按流量比转发，确定上线后可先小比例用户走v2 观察，没问题再慢慢放量，直至流量100%走v2</span><br><span class="line"># apiVersion: networking.istio.io/v1alpha3</span><br><span class="line"># kind: VirtualService</span><br><span class="line"># metadata:</span><br><span class="line">  # name: svc-b</span><br><span class="line"># spec:</span><br><span class="line">  # hosts:</span><br><span class="line">    # - svc-b</span><br><span class="line">  # http:</span><br><span class="line">  # - route:</span><br><span class="line">    # - destination:</span><br><span class="line">        # host: svc-b</span><br><span class="line">        # subset: v1</span><br><span class="line">      # weight: 5</span><br><span class="line">    # - destination:</span><br><span class="line">        # host: svc-b</span><br><span class="line">        # subset: v2</span><br><span class="line">      # weight: 95</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">---</span><br><span class="line"># 金丝雀发布-特定用户走v2版本，可用于上线前指定部分测试人员测试</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: svc-b</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">    - svc-b  #VirtualService相当于创建了一个kubernetes service（这里指svc-b 服务）的代理，</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - queryParams:</span><br><span class="line">        name:</span><br><span class="line">          exact: xx  #匹配请求参数name=xx的请求，可控制流量转发比例至v1或v2网络</span><br><span class="line">    route:        </span><br><span class="line">    - destination:</span><br><span class="line">        host: svc-b</span><br><span class="line">        subset: v1</span><br><span class="line">      weight: 0</span><br><span class="line">    - destination:</span><br><span class="line">        host: svc-b</span><br><span class="line">        subset: v2</span><br><span class="line">      weight: 100</span><br><span class="line">  - route:           #从上至下匹配，最后的默认匹配规则，这里没匹配上都走v1</span><br><span class="line">    - destination:</span><br><span class="line">        host: svc-b</span><br><span class="line">        subset: v1</span><br></pre></td></tr></table></figure></p>
+<p>测试请求：<code>http://localhost/greet?name=xx</code>，始终返回：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response from [svc-b] [v2] HostName: demo-b-v2-678cd56448-kxj8n HostAddress: 10.1.0.88 name is: xx-v2</span><br></pre></td></tr></table></figure></p>
+<p>name参数等于其他值时，始终走v1版本。</p>
+<p>注意点：</p>
+<ul>
+<li>不管是根据header或是query参数进行转发，该标识值一定要在服务调用之间进行传递，</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/11/Win10-Docker-desktop-安装k8s/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1740,7 +1953,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1751,7 +1964,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1762,7 +1975,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
