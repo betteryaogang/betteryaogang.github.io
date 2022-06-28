@@ -260,6 +260,191 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/06/28/Mysql不停机迁移/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="betteryaogang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="拾光记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/06/28/Mysql不停机迁移/" itemprop="url">Mysql不停机迁移</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-28T15:13:13+08:00">
+                2022-06-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  5 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>因业务拆分，需要将原来在一个App里的部分业务独立做一个全新的App,当然数据库也需要独立，但是原来的老数据也不能丢，因为功能已上线，所以不能做停服做离线迁移，只能考虑不停机迁移方案，所以就有了这一次迁移方案记录。</p>
+<p>查了一些现有的平滑迁移方案，基本上是追日志法和数据库双写法，但都存在一些问题，我们采用了双写法方案，但根据业务特点进行了一些改造。</p>
+<h3 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h3><p><strong>1. 服务改造 </strong></p>
+<p>首先需要对服务进行改造，使服务支持双写，我们采取的是AOP切面的方式，这个是由于后面我们双写开关的机制决定的（这块后面再说），当然双写的实现方式有很多，也可以在ORM层面实现，如果你们项目中使用了mybaits，那可以通过自定义plugin的方式拦截到sql。</p>
+<p>双写要实现的功能：</p>
+<ul>
+<li>读库开关，可控制读老库还是读新库</li>
+<li>写老库开关，可控制是否写数据到老库</li>
+</ul>
+<p>有人说不需要双写开关吗？并不需要，这其实就是我们进行改造的地方，下面详细说。</p>
+<p>双写遵循的原则是：</p>
+<ul>
+<li>旧库写入成功则业务返回成功</li>
+<li>新库写入失败记录到日志，事后补偿</li>
+</ul>
+<p><strong>2. 双写功能上线 </strong></p>
+<p>双写功能改造完成后可直接上线验证，因为此时读写都还在旧库上，不会对线上服务产生影响。</p>
+<p><strong>3. 现有数据迁移 </strong></p>
+<p>这块其实就是我们进行方案改造的地方，网上的方案一般都是对原数据库进行持久数据备份+增量数据同步，<br>但在实践过程中其实有一个点不好处理：</p>
+<ul>
+<li>因为迁移的过程中持续有数据写入和更新、是一个永远变动的动态状态，增量数据的同步其实是一个无线趋近同步但又永远不会完成同步的一个状态，那么迁移完成增量数据断开同步和打开双写这个动作就不好确定什么时候操作，并且这两个动作不论是先断开同步后打开双写、还是先打开双写再断开同步，无法做到无缝衔接，中间或多或少都会有一些间隔，中间丢失的数据需要有机制补偿回来。</li>
+</ul>
+<p>这个问题也不是说不能解决，可以选择业务低峰期进行，没有用户流量时还是很容易追平增量数据的。</p>
+<p>我们则是对这个方案进行了一个改造，可以实现分批同步数据、完成后自动开启双写，实现了类似灰度双写的功能。</p>
+<ul>
+<li><p>首先、我们将数据表划分为两大类，一类是系统表，另外就是业务表，系统表主要是存一些服务配置、数据字典,这类表不会存储用户数据，所以数据迁移比较简单，只需确保迁移时不操作修改数据就行，系统表迁移完成后，我们用一张系统表迁移状态表标识系统表的迁移状态，在拦截到要对这些系统表进行<code>insert</code>、<code>update</code>、<code>delete</code>操作时，我们通过迁移状态表判断该表是否已迁移完成，迁移完成则自动执行双写逻辑，否则不进行双写。</p>
+</li>
+<li><p>业务表的同步就复杂一些，因为我们的业务数据都是其实基本上都是基于user,而user id在服务内部都是绑定线程进行透传的，所以我们在AOP中可以轻松取到user id。所以我们以user为维度进行数据迁移。具体来讲，我们会分批查询一定时间未登录的用户（比如说一天内未登录，未登录说明也就不会操作数据，如果有统计在线状态就更好了，直接查询未在线用户就行），以userId维度 一次性迁移用户所有数据（这个过程其实是非常快的，但不排除在迁移过程中用户上线并修改了数据），所以无论如何，在一个用户的数据迁移结束后要进行数据完整性校验，比对新老两个数据库中的数据是否一致，如不一致以旧数据为准再次同步数据，直至完全一致后更新该用户迁移状态为已完成。那么对于已完成迁移的用户，其后续所有的操作在被AOP拦截到后会进行迁移状态判断，如以迁移完成则自动执行双写逻辑，否则不进行双写。</p>
+</li>
+</ul>
+<p><strong>4. 读请求切到新库 </strong></p>
+<p>此时服务是走老库读、新老库双写的状态，经过一段时间的观察，等到所有用户都是迁移成功状态后，那说明业务数据全部已迁移成功，并且都已完成一致性校验，此时我们就可以切换读库开关，让读请求到新库上，如果做的好点，可以慢慢放量将读请求灰度切过来，可以先小批量放1%读请求到新库观察个几天，没有问题后慢慢放量，直至读请求100%到新库。</p>
+<p><strong>5. 收尾 </strong></p>
+<p>到这一步读写都已经在新库了，实际上数据库迁移工作已经完成，但我们还剩一些收尾工作要做。<br>在经过一段时间的观察没问题后，首先停掉对老库的写请求，最后再上线一版新服务下掉双写代码（别忘了服务的数据库配置要改成新库。）到此整个数据库迁移工作就算完成了。前前后后花了近两个月时间，记录一下。</p>
+<p>用user id分批同步数据的方案可能并不具有通用性，因为方案这涉及到了项目具体的业务逻辑，需要根据自己业务酌情调整方案。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/28/Win10-Docker-Desktop-安装k8s-istio完成金丝雀发布/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1955,7 +2140,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
