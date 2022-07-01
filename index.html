@@ -260,6 +260,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/01/全链路灰度发布/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="betteryaogang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="拾光记">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/07/01/全链路灰度发布/" itemprop="url">全链路灰度发布</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-01T10:59:08+08:00">
+                2022-07-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  4 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现有架构是有一个前置APISIX网关统一做鉴权、路由转发，后边是各个微服务A、B、C，比如说调用关系是<code>A</code>-&gt;<code>B</code>-&gt;<code>C</code>,比如这次服务B有迭代需要上线，我们只能选在半夜系统没人使用的时候进行上线测试，所有人待命，如果测出问题还得回滚，每次上线都什么痛苦。</p>
+<p>所以我们需要一个能够灰度上线的功能，提前把服务B的灰度版本部署起来，同时控制只让部分指定特征的流量通过灰度版本，而不影响线上正式流量，测试工作也就可以提前进行。</p>
+<h3 id="流量染色"><a href="#流量染色" class="headerlink" title="流量染色"></a>流量染色</h3><p>要实现灰度发布功能，首先就需要我们的网关和服务能够争取区分正式流量和灰度流量，那么我们首先需要对流量进行染色。</p>
+<p><strong>1. 染色规则 </strong></p>
+<p>染色规则有很多，可以是指定某些特定用户id、也可以是带特定请求头的流量、或是特定ip发起的请求，这块有多种规则可以灵活选择。</p>
+<p>这里我们选用带特定请求头<code>flow_tag=XXX</code>的流量走灰度链路。</p>
+<p><strong>2. 染色标记透传 </strong></p>
+<p>流量到达网关后，如果发现带flow_tag染色标识，那么需要把染色标识向上游服务透传，同时服务与服务之间的相同调用也要将染色标识透传，也就是说在网关路由转发、服务调用的整个链路中需要始终带上染色标识来标识该流量是正式流量还是灰度流量。</p>
+<p>网关路由转发没什么好说的，原封不动转发流量就行。</p>
+<p>服务层面，因为我们是使用openfeign工具来服务间调用的，所以我们需要对服务进行一下改造：</p>
+<ul>
+<li>服务层面配置一个请求filter拦截所有入口流量，如果请求带有<code>flow_tag</code>标识，我们取出放到请求处理线程的<code>ThreadLocal</code>变量里，如果请求头没有标识，我们需要查询当前线上流量使用的标识、主动对流量进行染色</li>
+<li>新增一个openfeign的<code>RequestInterceptor</code>拦截器，统一对服务间的调用进行拦截，从前面的<code>ThreadLocal</code>变量里取出<code>flow_tag</code>标识并设置到request header里去</li>
+</ul>
+<h3 id="服务间调用"><a href="#服务间调用" class="headerlink" title="服务间调用"></a>服务间调用</h3><p>因为我们服务都是部署在k8s集群，比如都在<code>cloud</code>的namespace下，服务间调用都是通过k8s内部域名调用，如serviceB的内部域名差不多就是<code>serviceB.cloud.svc.cluster.local</code>这样，那么serviceB的gray版本的服务内部域名就是<code>serviceB-gray.cloud.svc.cluster.local</code>这样，那么当<code>serviceA</code>-&gt;<code>serviceB</code>,<code>serviceA</code>如何选择调用那个B服务呢？</p>
+<p>我们现在一共有三个服务，其中serviceB又有base和gray两个版本同时在线提供服务，我们定义了两条调用链路分别为<code>blue</code>和<code>green</code>，每条链路我们暂且称之为泳道（名称来自于阿里云相关方案概念）：</p>
+<ol>
+<li>blue: <code>serviceA</code>-&gt;<code>serviceB</code>-&gt;<code>serviceC</code></li>
+<li>green:  <code>serviceA</code>-&gt;<code>serviceB-gray</code>-&gt;<code>serviceC</code></li>
+</ol>
+<p>其中，一个服务可以属于多个泳道，一个泳道也可以包含多个服务，服务只能在同属一个泳道之间进行调用、不能跨泳道调用；另外，我们还需要一个可以动态切换的标识开关<code>current_tag=blue</code>,标识线上base版本服务正在走哪条泳道，这样我们可以在灰度服务测试完成后一键切换完成上线。</p>
+<p>比如，现在线上base服务正在走的是<code>blue</code>泳道，那么当我们需要对serviceB进行灰度测试时，我们只需要在请求带上<code>flow_tag=green</code>的请求头，网关收到后，首先找到green泳道的全量配置，先将请求转发到serviceA，serviceA调用serviceB时，根据<code>flow_tag=green</code>也是先找到green泳道的全量配置，发现serviceB配的是<code>serviceB-gray</code>,那么就会去调用<code>serviceB-gray</code>服务，当它需要调用serviceC的时候也是同样的流程。</p>
+<h3 id="如何上线"><a href="#如何上线" class="headerlink" title="如何上线"></a>如何上线</h3><p>因为线上base环境的流量总是不会带<code>flow_tag</code>标识的,所以流量在经过网关时，网关会根据动态切换的标识开关<code>current_tag=blue</code>自动为流量染色<code>blue</code>,那么后续这个流量就会流入到blue的泳道。</p>
+<p>当<code>green</code>泳道测试没问题后，我们只需要将<code>current_tag=blue</code>改成<code>current_tag=green</code>，后续所有线上流量自动切换到green泳道上来了，灰度上线完成。</p>
+<p>当然，这个<code>current_tag</code>配置变动是需要能够动并被所有服务监听到的，我们使用的动态配置中心是ETCD,当然也可以使用Nacos之类的配置中心。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/06/28/Mysql不停机迁移/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2140,7 +2315,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
