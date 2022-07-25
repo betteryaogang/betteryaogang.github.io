@@ -79,13 +79,17 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="拾光记">
-<meta property="og:url" content="http://yoursite.com/categories/kubernetes/istio/index.html">
+<meta name="description" content="MySql版本 5.7  事务级别：RR 关闭MySql事务自动提交  SET autocommit = 0; 建表：123456CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(50) DEFAULT NULL, `userpass` varchar(50) DEFAULT NULL, P">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySql加锁范围">
+<meta property="og:url" content="http://yoursite.com/2022/07/25/MySql加锁范围/index.html">
 <meta property="og:site_name" content="拾光记">
+<meta property="og:description" content="MySql版本 5.7  事务级别：RR 关闭MySql事务自动提交  SET autocommit = 0; 建表：123456CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(50) DEFAULT NULL, `userpass` varchar(50) DEFAULT NULL, P">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2022-07-25T08:44:32.642Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="拾光记">
+<meta name="twitter:title" content="MySql加锁范围">
+<meta name="twitter:description" content="MySql版本 5.7  事务级别：RR 关闭MySql事务自动提交  SET autocommit = 0; 建表：123456CREATE TABLE `user` ( `id` int(11) NOT NULL AUTO_INCREMENT, `username` varchar(50) DEFAULT NULL, `userpass` varchar(50) DEFAULT NULL, P">
 
 
 
@@ -115,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/kubernetes/istio/">
+  <link rel="canonical" href="http://yoursite.com/2022/07/25/MySql加锁范围/">
 
 
 
 
 
-  <title>分类: istio | 拾光记</title>
+  <title>MySql加锁范围 | 拾光记</title>
   
 
 
@@ -140,7 +144,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
 <a href="https://github.com/betteryaogang" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
@@ -245,53 +249,221 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>istio<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/07/25/MySql加锁范围/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="betteryaogang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="拾光记">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2022/03/28/Win10-Docker-Desktop-安装k8s-istio完成金丝雀发布/" itemprop="url">
-              
-                <span itemprop="name">Win10 +Docker Desktop 安装k8s istio完成金丝雀发布</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">MySql加锁范围</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2022-03-28T17:52:00+08:00" content="2022-03-28">
-          03-28
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-25T15:42:10+08:00">
+                2022-07-25
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  515
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  2 分钟
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>MySql版本 5.7 </p>
+<p>事务级别：RR</p>
+<p>关闭MySql事务自动提交  SET autocommit = 0;</p>
+<p>建表：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">CREATE TABLE `user` (</span><br><span class="line"> `id` int(11) NOT NULL AUTO_INCREMENT,</span><br><span class="line"> `username` varchar(50) DEFAULT NULL,</span><br><span class="line"> `userpass` varchar(50) DEFAULT NULL,</span><br><span class="line"> PRIMARY KEY (`id`)</span><br><span class="line">) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;</span><br></pre></td></tr></table></figure></p>
+<p>构造几条测试数据：</p>
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>username</th>
+<th>userpass</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>A</td>
+<td>1</td>
+</tr>
+<tr>
+<td>6</td>
+<td>B</td>
+<td>2</td>
+</tr>
+<tr>
+<td>9</td>
+<td>C</td>
+<td>3</td>
+</tr>
+<tr>
+<td>12</td>
+<td>D</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+<p>几种情况分析:</p>
+<p>1、主键索引等值查询，并且id存在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id = 1 for update;</span><br></pre></td></tr></table></figure></p>
+<p>分析：由于是主键索引的等值查询，所以next-key lock退化成了record lock<br>结论：只会加record lock（即行锁）</p>
+<p>2、主键索引等值查询，并且id不存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id = 3 for update;</span><br></pre></td></tr></table></figure>
+<p>分析：由于id=3不存在，所以next-key lock会锁住（1,6]的前开后闭区间，又由于id=3是等值查询，所以不必锁住id=6的记录，锁退化成（1，6）的gap lock，此时可以对id=1和id=6的记录进行更新。</p>
+<p>3、主键索引的范围查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id &gt;= 6 and id &lt; 8 for update;</span><br></pre></td></tr></table></figure>
+<p>分析：根据条件id&gt;=6确定区间[6,+∞), 再根据id&lt;8,8在区间(6,9]的左开右闭区间内，所以结合起来就是会锁住[6,9]区间。<br>如果改成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id &gt; 6 and id &lt; 8 for update;</span><br></pre></td></tr></table></figure></p>
+<p>那么就会锁住(6,9]区间。</p>
+<p>4、主键索引的范围查询</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from user where id &gt; 6 and id &lt;= 9 for update;</span><br></pre></td></tr></table></figure>
+<p>分析：按正常理解会锁住(6,9]区间，但实际上(9,12]区间也会被锁住，因为是范围查询，InnoDB会在扫描到第一个不满足条件的记录为止，也就是说在扫描到id=9这条记录后，并不会停止，会继续向前扫描下一条记录即id=12这条记录，而id=12落在(9,12]区间内，因为扫描到的记录都会加锁，所以(9,12]区间也会加锁，所以这条sql会锁住(6,12]区间。</p>
+<p>据称在MySql 8.0.18及以后的版本已修复此问题，不会锁住(9,12]区间。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/07/01/全链路灰度发布/" rel="next" title="全链路灰度发布">
+                <i class="fa fa-chevron-left"></i> 全链路灰度发布
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -299,6 +471,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -520,6 +696,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
